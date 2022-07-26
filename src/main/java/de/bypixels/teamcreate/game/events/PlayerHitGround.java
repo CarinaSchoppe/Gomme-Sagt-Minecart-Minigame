@@ -46,21 +46,11 @@ public class PlayerHitGround implements Listener {
         if (MinecartRain.getPlayingPlayers().size() == 1) {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 all.sendMessage(MinecartRain.getPREFIX() + "§7Der Spieler: §6" + MinecartRain.getPlayingPlayers().get(0).getName() + " §7hat gewonnen!");
-                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain");
-                    }
-                },40);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain"), 40);
             }
         }
         if (MinecartRain.getPlayingPlayers().size() == 0){
-            Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain");
-                }
-            },40);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain"), 40);
         }
     }
 }

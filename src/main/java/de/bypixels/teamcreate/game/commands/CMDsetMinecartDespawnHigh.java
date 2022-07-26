@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -26,10 +27,9 @@ public class CMDsetMinecartDespawnHigh implements CommandExecutor {
 
     //Setzt die höhe wo Minecarts despawnen
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         if (command.getName().equalsIgnoreCase("highminecartdespawn")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (player.hasPermission("highminecartdespawn")) {
 
                     DataAboutGame.setHighWhereMinecartsDespawn(player);
@@ -39,7 +39,7 @@ public class CMDsetMinecartDespawnHigh implements CommandExecutor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    player.sendMessage(MinecartRain.PREFIX+"§7Du hast die Höhe der Minecarts zum Despawnen gesetzt!");
+                    player.sendMessage(MinecartRain.PREFIX + "§7Du hast die Höhe der Minecarts zum Despawnen gesetzt!");
                 }else{
                     player.sendMessage(MinecartRain.getPREFIX()+ "§cDu hast nicht die passenden Rechte um diesen Befehl benutzen!");
                 }

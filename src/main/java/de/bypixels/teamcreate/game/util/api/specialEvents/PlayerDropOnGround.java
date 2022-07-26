@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /******************************************************************
  *   Copyright Notice                                             * 
@@ -19,11 +20,11 @@ import org.bukkit.event.HandlerList;
 public class PlayerDropOnGround extends Event implements Cancellable {
 
     public PlayerDropOnGround(Player player) {
-   this.player = player;
+        this.player = player;
     }
 
-    Player player;
-    public static HandlerList handlers = new HandlerList();
+    public static final HandlerList handlers = new HandlerList();
+    final Player player;
     public boolean cancelled = false;
 
 
@@ -46,7 +47,7 @@ public class PlayerDropOnGround extends Event implements Cancellable {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

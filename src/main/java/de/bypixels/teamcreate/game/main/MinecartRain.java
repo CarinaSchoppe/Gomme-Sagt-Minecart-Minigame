@@ -2,9 +2,11 @@ package de.bypixels.teamcreate.game.main;
 
 import de.bypixels.teamcreate.game.commands.*;
 import de.bypixels.teamcreate.game.events.*;
-import de.bypixels.teamcreate.game.util.*;
+import de.bypixels.teamcreate.game.util.BanishedPlayers;
+import de.bypixels.teamcreate.game.util.DataAboutArena;
+import de.bypixels.teamcreate.game.util.DataAboutGame;
+import de.bypixels.teamcreate.game.util.SortedHashMap;
 import de.bypixels.teamcreate.game.util.api.WinDetection;
-
 import de.bypixels.teamcreate.game.util.api.specialEvents.PlayerWinEvent;
 import de.bypixels.teamcreate.game.util.sql.MySQL;
 import org.bukkit.Bukkit;
@@ -25,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public final class MinecartRain extends JavaPlugin implements Listener {
 
@@ -57,41 +60,23 @@ public final class MinecartRain extends JavaPlugin implements Listener {
 
     public static String PREFIX = "§7[§6MinecartRain§7]§f ";
 
+    public static final MySQL mySQLClass = new MySQL();
     //List of Player they are Playing
-    private static List<Player> Playing = new ArrayList<>();
-
+    private static final List<Player> Playing = new ArrayList<>();
     //@param Minecart ArrayList of ALL spawned Minecarts
-    private static Collection<Minecart> spawnedMinecarts = new ArrayList<>();
-
-    private static List<String> winner = new ArrayList<String>();
+    private static final Collection<Minecart> spawnedMinecarts = new ArrayList<>();
 
     public static List<String> getWinner() {
         return winner;
     }
 
-    @Override
-    public void onEnable() {
-        plugin = this;
-        DataAboutGame.setDataInConfig();
-        init(Bukkit.getPluginManager());
+    private static final List<String> winner = new ArrayList<>();
 
-        mySQLClass.createFile();
-        try {
-            for (Entity minecart : Bukkit.getWorld(DataAboutArena.getArenaWorldName()).getEntities()) {
-                if (minecart instanceof Minecart) {
-                    minecart.remove();
-                }
-            }
-        } catch (Exception e) {
-            MinecartRain.printInConsole("Du musst erst die Welt festlegen!");
+    private static void MySQLConnect() {
+        if (mySQLClass.getCfg().getBoolean("MySQL")) {
+            MySQL.connect();
         }
-
-        MySQLConnect();
-        Bukkit.getConsoleSender().sendMessage(MinecartRain.PREFIX + "§aTh Plugin is: ON!");
-
     }
-
-    public static MySQL mySQLClass = new MySQL();
 
 
     //Some gettters and Setters
@@ -115,30 +100,44 @@ public final class MinecartRain extends JavaPlugin implements Listener {
         MinecartRain.PREFIX = PREFIX;
     }
 
-
     @Override
-    public void onDisable() {
+    public void onEnable() {
+        plugin = this;
+        DataAboutGame.setDataInConfig();
+        init(Bukkit.getPluginManager());
+
+        mySQLClass.createFile();
         try {
-            for (Entity minecart : Bukkit.getWorld(DataAboutArena.getArenaWorldName()).getEntities()) {
+            for (Entity minecart : Objects.requireNonNull(Bukkit.getWorld(DataAboutArena.getArenaWorldName())).getEntities()) {
                 if (minecart instanceof Minecart) {
                     minecart.remove();
                 }
             }
         } catch (Exception e) {
+            MinecartRain.printInConsole("Du musst erst die Welt festlegen!");
+        }
+
+        MySQLConnect();
+        Bukkit.getConsoleSender().sendMessage(MinecartRain.PREFIX + "§aTh Plugin is: ON!");
+
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            for (Entity minecart : Objects.requireNonNull(Bukkit.getWorld(DataAboutArena.getArenaWorldName())).getEntities()) {
+                if (minecart instanceof Minecart) {
+                    minecart.remove();
+                }
+            }
+        } catch (Exception ignored) {
 
         }
         MySQL.disconnect();
         Bukkit.getConsoleSender().sendMessage(MinecartRain.PREFIX + "§4§aTh Plugin is: §4OFF!");
     }
 
-
-    private static void MySQLConnect(){
-        if (mySQLClass.getCfg().getBoolean("MySQL") == true) {
-            MySQL.connect();
-        }
-    }
     //Methode, welche besondere Daten einfügt
-    @SuppressWarnings("deprecation")
     public void init(PluginManager pluginManager) {
 
         DataAboutGame.setDataInConfig();
@@ -154,7 +153,7 @@ public final class MinecartRain extends JavaPlugin implements Listener {
             if (DataAboutGame.isDeathOnDropOnGround()) {
                 pluginManager.registerEvents(new PlayerHitGround(), this);
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
         }
 
         pluginManager.registerEvents(new WinPlayerMove(), this);
@@ -164,22 +163,22 @@ public final class MinecartRain extends JavaPlugin implements Listener {
         pluginManager.registerEvents(this, this);
         pluginManager.registerEvents(new MinecartJoinEvent(), this);
 
-        MinecartRain.getPlugin().getCommand("start").setExecutor(new CMDstartGame());
-        MinecartRain.getPlugin().getCommand("dataofgame").setExecutor(new CMDsetDatasOfGame());
-        MinecartRain.getPlugin().getCommand("setarena").setExecutor(new CMDsetArena());
-        MinecartRain.getPlugin().getCommand("deathlocation").setExecutor(new CMDsetDeathLocation());
-        MinecartRain.getPlugin().getCommand("backinarena").setExecutor(new CMDbackInArena());
-        MinecartRain.getPlugin().getCommand("highminecartspawn").setExecutor(new CMDsetMinecartSpawnHigh());
-        MinecartRain.getPlugin().getCommand("highminecartdespawn").setExecutor(new CMDsetMinecartDespawnHigh());
-        MinecartRain.getPlugin().getCommand("configreload").setExecutor(new CMDreloadConfig());
-        MinecartRain.getPlugin().getCommand("stoprain").setExecutor(new CMDstopGame());
-        MinecartRain.getPlugin().getCommand("removeminecarts").setExecutor(new CMDremove());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("start")).setExecutor(new CMDstartGame());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("dataofgame")).setExecutor(new CMDsetDatasOfGame());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("setarena")).setExecutor(new CMDsetArena());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("deathlocation")).setExecutor(new CMDsetDeathLocation());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("backinarena")).setExecutor(new CMDbackInArena());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("highminecartspawn")).setExecutor(new CMDsetMinecartSpawnHigh());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("highminecartdespawn")).setExecutor(new CMDsetMinecartDespawnHigh());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("configreload")).setExecutor(new CMDreloadConfig());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("stoprain")).setExecutor(new CMDstopGame());
+        Objects.requireNonNull(MinecartRain.getPlugin().getCommand("removeminecarts")).setExecutor(new CMDremove());
 
         try {
 
             DataAboutGame.setPREFIX(ChatColor.translateAlternateColorCodes('&', DataAboutGame.getPREFIX()));
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -202,10 +201,6 @@ public final class MinecartRain extends JavaPlugin implements Listener {
         player.sendMessage(MinecartRain.PREFIX + message);
     }
 
-    public static void sendAllMessage() {
-
-    }
-
     public static void sendAllPlayerMessage(String message) {
         for (Player all : Bukkit.getOnlinePlayers())
             all.sendMessage(MinecartRain.PREFIX + message);
@@ -216,7 +211,7 @@ public final class MinecartRain extends JavaPlugin implements Listener {
     @Override
     public void onLoad() {
         try {
-            for (Entity entity : Bukkit.getWorld(DataAboutArena.getArenaWorldName()).getEntities()) {
+            for (Entity entity : Objects.requireNonNull(Bukkit.getWorld(DataAboutArena.getArenaWorldName())).getEntities()) {
                 if (entity instanceof Minecart) {
                     entity.remove();
 
@@ -224,7 +219,7 @@ public final class MinecartRain extends JavaPlugin implements Listener {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -235,7 +230,7 @@ public final class MinecartRain extends JavaPlugin implements Listener {
     public void onDroponGround(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (MinecartRain.getPlayingPlayers().contains(player)) {
-            if (MinecartRain.isStart() == true) {
+            if (MinecartRain.isStart()) {
                 if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
                     Bukkit.getPluginManager().callEvent(new de.bypixels.teamcreate.game.util.api.specialEvents.PlayerDropOnGround(player));
 
@@ -249,25 +244,24 @@ public final class MinecartRain extends JavaPlugin implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onEnterMinecartToWin(VehicleEnterEvent event) {
    Player player = (Player) event.getEntered();
-   if (event.getVehicle() instanceof Minecart){
-       Minecart mInecart = (Minecart) event.getVehicle();
-       if (MinecartRain.spawnedMinecarts.contains(mInecart)){
-           if (WinDetection.checkForWin(player) == true){
-               if (MinecartRain.getPlayingPlayers().contains(player)){
-                   if (MinecartRain.isStart() == true){
-                       Bukkit.getPluginManager().callEvent(new PlayerWinEvent(player));
-                   }
-               }
-           }
-       }
-   }
+        if (event.getVehicle() instanceof Minecart mInecart) {
+            if (MinecartRain.spawnedMinecarts.contains(mInecart)) {
+                if (WinDetection.checkForWin(player)) {
+                    if (MinecartRain.getPlayingPlayers().contains(player)) {
+                        if (MinecartRain.isStart()) {
+                            Bukkit.getPluginManager().callEvent(new PlayerWinEvent(player));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPlayerWin(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (WinDetection.checkForWin(player) == true) {
-            if (MinecartRain.isStart() == true) {
+        if (WinDetection.checkForWin(player)) {
+            if (MinecartRain.isStart()) {
                 Bukkit.getPluginManager().callEvent(new PlayerWinEvent(player));
             }
 
@@ -278,8 +272,7 @@ public final class MinecartRain extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onMinecartMoveEvent(VehicleEnterEvent event){
-        if (event.getVehicle() instanceof Minecart){
-            Minecart minecart = (Minecart) event.getVehicle();
+        if (event.getVehicle() instanceof Minecart minecart) {
 
 
             //Todo:  Event fertig machen!!! Wenn MIneccart über y = ... ist (Wert aus Config auslesen)

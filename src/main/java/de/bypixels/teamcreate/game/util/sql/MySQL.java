@@ -1,10 +1,13 @@
 package de.bypixels.teamcreate.game.util.sql;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 /******************************************************************
  *   Copyright Notice                                                                *
  *   Copyright (c) PixelsDE | Daniel 2018                                    *
@@ -18,13 +21,12 @@ import java.sql.*;
  ******************************************************************/
 
 
-
 public class MySQL {
 
-    private static File file = new File("plugins/Minecart-Rain/MySQL.yml");
-    private static FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+    private static final File file = new File("plugins/Minecart-Rain/MySQL.yml");
+    private static final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-    public  void createFile(){
+    public void createFile() {
 
         cfg.addDefault("MySQL", false);
         cfg.addDefault("port", "3306");
@@ -115,7 +117,7 @@ public class MySQL {
 
     private static   boolean isConnected() {
 
-        return (connection == null ? false : true);
+        return (connection != null);
     }
 }
 

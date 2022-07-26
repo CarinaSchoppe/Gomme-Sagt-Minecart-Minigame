@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /******************************************************************
  *   Copyright Notice                                             *
@@ -20,13 +21,12 @@ import org.bukkit.entity.Player;
  *****************************************************************/
 
 public class CMDbackInArena implements CommandExecutor {
-    
+
     //Command der die Location setzt wo die Spieler hinkommen nach dem Spiel
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, String[] args) {
         if (command.getName().equalsIgnoreCase("backinarena")) {
-            if (commandSender instanceof Player) {
-                Player player = (Player) commandSender;
+            if (commandSender instanceof Player player) {
                 if (player.hasPermission("backinarena")) {
                     DataAboutArena.setBackInArenaX(player);
                     DataAboutArena.setBackInArenaY(player);
@@ -34,8 +34,8 @@ public class CMDbackInArena implements CommandExecutor {
                     DataAboutArena.setBackInArenaWorldName(player.getWorld().getName());
                     DataAboutArena.setBackInArenaLocInConfig();
                     player.sendMessage(MinecartRain.PREFIX + "§7Du hast die Location wo die Spieler nach dem Spiel hinkommen gesetzt!");
-                }else{
-                    player.sendMessage(MinecartRain.getPREFIX()+ "§cDu hast nicht die passenden Rechte um diesen Befehl benutzen!");
+                } else {
+                    player.sendMessage(MinecartRain.getPREFIX() + "§cDu hast nicht die passenden Rechte um diesen Befehl benutzen!");
                 }
             }
         }

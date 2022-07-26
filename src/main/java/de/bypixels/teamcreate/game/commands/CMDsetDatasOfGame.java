@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -24,14 +25,13 @@ import java.io.IOException;
 public class CMDsetDatasOfGame implements CommandExecutor {
     //Setzt einige Daten über die Arena
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, String[] args) {
         if (command.getName().equalsIgnoreCase("DataOfGame")) {
-            if (commandSender instanceof Player) {
-                Player player = (Player) commandSender;
+            if (commandSender instanceof Player player) {
                 if (player.hasPermission("dataofgame")) {
                     if (args.length == 2) {
                         if (args[0].equalsIgnoreCase("boundaryOfMinecartSpawn")) {
-                            DataAboutGame.setBoundaryOfMinecartSpawn(Integer.valueOf(args[1]));
+                            DataAboutGame.setBoundaryOfMinecartSpawn(Integer.parseInt(args[1]));
                             DataAboutGame.getCfg().set("boundaryOfMinecartSpawn", Integer.valueOf(args[1]));
                             try {
                                 DataAboutGame.getCfg().save(DataAboutGame.getFile());
@@ -40,7 +40,7 @@ public class CMDsetDatasOfGame implements CommandExecutor {
                             }
                             player.sendMessage(MinecartRain.PREFIX + "Du hast die Boundary der Minecarts auf: " + args[1] + " gesetzt!");
                         } else if (args[0].equalsIgnoreCase("highToWinGame")) {
-                            DataAboutGame.setHighToWinGame(Integer.valueOf(args[1]));
+                            DataAboutGame.setHighToWinGame(Integer.parseInt(args[1]));
                             DataAboutGame.getCfg().set("highToWinGame", Integer.valueOf(args[1]));
                             try {
                                 DataAboutGame.getCfg().save(DataAboutGame.getFile());
@@ -49,7 +49,7 @@ public class CMDsetDatasOfGame implements CommandExecutor {
                             }
                             player.sendMessage(MinecartRain.PREFIX + "Du hast die höhe zum Gewinnen auf: " + args[1] + " gesetzt!");
                         } else if (args[0].equalsIgnoreCase("timeBetweenMinecartSpawn")) {
-                            DataAboutGame.setTimeBetweenMinecartSpawn(Integer.valueOf(args[1]));
+                            DataAboutGame.setTimeBetweenMinecartSpawn(Integer.parseInt(args[1]));
                             DataAboutGame.getCfg().set("timeBetweenMinecartSpawn", Integer.valueOf(args[1]));
                             try {
                                 DataAboutGame.getCfg().save(DataAboutGame.getFile());
@@ -58,7 +58,7 @@ public class CMDsetDatasOfGame implements CommandExecutor {
                             }
                             player.sendMessage(MinecartRain.PREFIX + "Du hast die Boundary der Minecarts auf: " + args[1] + " gesetzt!");
                         } else if (args[0].equalsIgnoreCase("fallSpeedOfMinecart")) {
-                            DataAboutGame.setFallSpeedOfMinecart(Float.valueOf(args[1]));
+                            DataAboutGame.setFallSpeedOfMinecart(Float.parseFloat(args[1]));
                             DataAboutGame.getCfg().set("fallSpeedOfMinecart", Float.valueOf(args[1]));
                             try {
                                 DataAboutGame.getCfg().save(DataAboutGame.getFile());
@@ -67,7 +67,7 @@ public class CMDsetDatasOfGame implements CommandExecutor {
                             }
                             player.sendMessage(MinecartRain.PREFIX + "Du hast die Fallgeschwindigkeit der Minecarts auf: " + args[1] + " gesetzt!");
                         } else  if (args[0].equalsIgnoreCase("timeBeforeSetInMinecart")) {
-                            DataAboutGame.setTimeBeforeSetInMinecart(Integer.valueOf(args[1]));
+                            DataAboutGame.setTimeBeforeSetInMinecart(Integer.parseInt(args[1]));
                             DataAboutGame.getCfg().set("timeBeforeSetInMinecart", Integer.valueOf(args[1]));
                             try {
                                 DataAboutGame.getCfg().save(DataAboutGame.getFile());

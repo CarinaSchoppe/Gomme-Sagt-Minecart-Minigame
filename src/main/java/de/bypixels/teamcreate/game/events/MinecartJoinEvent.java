@@ -33,14 +33,12 @@ public class MinecartJoinEvent implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onJoinIntoMinecart(VehicleEnterEvent event) {
-        if (event.getVehicle() instanceof Minecart) {
-            Minecart minecart = (Minecart) event.getVehicle();
-            if (event.getEntered() instanceof Player) {
-                Player player = (Player) event.getEntered();
+        if (event.getVehicle() instanceof Minecart minecart) {
+            if (event.getEntered() instanceof Player player) {
                 if (MinecartRain.getPlayingPlayers().contains(player)) {
                     if (MinecartRain.getSpawnedMinecarts().contains(minecart)) {
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, 2);
-                        if (WinDetection.checkForWin(player) == true) {
+                        if (WinDetection.checkForWin(player)) {
                             for (Player all : Bukkit.getOnlinePlayers()) {
                                 all.sendMessage(MinecartRain.PREFIX + "§7Der Spieler: §6" + player.getName() + " §7hat das Ziel erreicht!");
                             }
@@ -52,12 +50,7 @@ public class MinecartJoinEvent implements Listener {
                             player.sendMessage(MinecartRain.PREFIX + "§7Du hast gewonnen und bist zurück im Spiel!");
                             MinecartRain.getPlayingPlayers().remove(player);
                             if (MinecartRain.getPlayingPlayers().size() == 0) {
-                                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain");
-                                    }
-                                }, 40);
+                                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain"), 40);
                             }
                         }
                     }

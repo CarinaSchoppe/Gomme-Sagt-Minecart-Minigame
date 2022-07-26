@@ -1,15 +1,4 @@
 package de.bypixels.teamcreate.game.events;
-/******************************************************************
- *   Copyright Notice                                             *
- *   Copyright (c) PixelsDE | Daniel 2018                         *
- *   Created: 05.05.2018 / 11:59                                  *
- *   All contents of this source text are protected by copyright. *
- *   The copyright law, unless expressly indicated otherwise, is  *
- *   at PixelsDE | Daniel. All rights reserved                    *
- *   Any type of duplication, distribution, rental, sale, award,  *
- *   Public accessibility or other use                            *
- *   Requires the express written consent of PixelsDE | Daniel.   *
- *****************************************************************/
 
 import de.bypixels.teamcreate.game.main.MinecartRain;
 import de.bypixels.teamcreate.game.util.DataAboutArena;
@@ -52,14 +41,7 @@ public class WinPlayerMove implements Listener {
 
         if (MinecartRain.getWinner().size() == DataAboutGame.getAmountOfPlayerToStop() || MinecartRain.getPlayingPlayers().isEmpty()) {
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), new Runnable() {
-
-                @Override
-                public void run() {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain");
-                }
-
-            }, 40);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(MinecartRain.getPlugin(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stoprain"), 40);
 
         }
 

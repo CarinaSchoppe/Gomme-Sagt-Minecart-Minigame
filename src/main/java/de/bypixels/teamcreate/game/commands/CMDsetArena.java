@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /******************************************************************
  *   Copyright Notice                                             *
@@ -24,16 +25,15 @@ public class CMDsetArena implements CommandExecutor {
 
     //Setzt den Mittelpunkt der Arena
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if (command.getName().equalsIgnoreCase("setarena")){
-            if (commandSender instanceof Player){
-                Player player = (Player) commandSender;
-                if (player.hasPermission("setarena")){
+    public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, String[] args) {
+        if (command.getName().equalsIgnoreCase("setarena")) {
+            if (commandSender instanceof Player player) {
+                if (player.hasPermission("setarena")) {
 
-                   DataAboutArena.setArenaBoundX(player);
-                   DataAboutArena.setArenaBoundZ(player);
-                   DataAboutArena.setArenaBoundY(player);
-                   DataAboutArena.setArenaWorld(player.getWorld().getName());
+                    DataAboutArena.setArenaBoundX(player);
+                    DataAboutArena.setArenaBoundZ(player);
+                    DataAboutArena.setArenaBoundY(player);
+                    DataAboutArena.setArenaWorld(player.getWorld().getName());
 
                     DataAboutArena.setArenaInConfig();
 

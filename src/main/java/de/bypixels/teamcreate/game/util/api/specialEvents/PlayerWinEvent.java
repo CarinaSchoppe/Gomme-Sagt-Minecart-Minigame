@@ -1,6 +1,7 @@
 package de.bypixels.teamcreate.game.util.api.specialEvents;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /******************************************************************
  *   Copyright Notice                                             * 
@@ -19,8 +20,8 @@ public class PlayerWinEvent extends org.bukkit.event.Event implements org.bukkit
         this.player = player;
     }
 
-    private Player player;
-    public static HandlerList handlers = new HandlerList();
+    public static final HandlerList handlers = new HandlerList();
+    private final Player player;
     public boolean cancelled = false;
 
 
@@ -43,7 +44,7 @@ public class PlayerWinEvent extends org.bukkit.event.Event implements org.bukkit
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

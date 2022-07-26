@@ -28,9 +28,9 @@ public class BanishedPlayers {
     public BanishedPlayers() {
     }
 
-    private static File file = new File("plugins/Minecart-Rain/banished.yml");
+    private static final File file = new File("plugins/Minecart-Rain/banished.yml");
     public static FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-    private static Collection<String> banishedPlayers = new ArrayList<>();
+    private static final Collection<String> banishedPlayers = new ArrayList<>();
 
 
     public static void setInConfig(){

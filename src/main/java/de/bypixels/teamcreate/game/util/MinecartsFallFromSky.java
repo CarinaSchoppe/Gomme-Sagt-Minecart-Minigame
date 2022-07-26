@@ -22,20 +22,17 @@ import java.util.List;
 
 public class MinecartsFallFromSky {
 
-    private static World world = Bukkit.getWorld(DataAboutArena.getArenaWorldName());
+    private static final World world = Bukkit.getWorld(DataAboutArena.getArenaWorldName());
     public static int TaskID;
-    private static List<Entity> nearMinecarts = DataAboutArena.getArenaMiddle().getWorld().getEntities();
+    private static final List<Entity> nearMinecarts = DataAboutArena.getArenaMiddle().getWorld().getEntities();
     private static Minecart minecart;
 
     //Spawned die Minecarts
     public static void startMinecartRain() {
-        TaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(de.bypixels.teamcreate.game.main.MinecartRain.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                minecart = world.spawn(RandomLocation.getRandomLocation(), Minecart.class);
-                de.bypixels.teamcreate.game.main.MinecartRain.getSpawnedMinecarts().add(minecart);
-            }
-        },  DataAboutGame.getTimeBetweenMinecartSpawn(), DataAboutGame.getTimeBetweenMinecartSpawn());
+        TaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(de.bypixels.teamcreate.game.main.MinecartRain.getPlugin(), () -> {
+            minecart = world.spawn(RandomLocation.getRandomLocation(), Minecart.class);
+            de.bypixels.teamcreate.game.main.MinecartRain.getSpawnedMinecarts().add(minecart);
+        }, DataAboutGame.getTimeBetweenMinecartSpawn(), DataAboutGame.getTimeBetweenMinecartSpawn());
 
     }
 

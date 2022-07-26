@@ -21,10 +21,10 @@ import java.util.List;
  *****************************************************************/
 public class SetPlayerInMinecart {
 
-    private boolean empty = false;
+    private final boolean empty = false;
 
     public SetPlayerInMinecart(Player player) {
-        if (DataAboutGame.isDeathOnDropOnGround() == true) {
+        if (DataAboutGame.isDeathOnDropOnGround()) {
             Location locationPlayer = player.getLocation().clone();
             locationPlayer.add(locationPlayer.getX(), locationPlayer.getY() + 20, locationPlayer.getZ());
             player.teleport(locationPlayer);

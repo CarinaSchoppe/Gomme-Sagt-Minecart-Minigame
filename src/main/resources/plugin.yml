@@ -9,8 +9,6 @@ commands:
     description: Startet das Spiel!
   dataofgame:
     description: Setzt die Daten des Spiels
-  backinarena:
-    description: Setzt die Location wo die Spieler spawnen wenn das Game over ist
   setarena:
     description: Setzt einige Daten zur Arena
   deathlocation:

@@ -1,17 +1,5 @@
 package de.bypixels.teamcreate.game.commands;
 
-/******************************************************************
- *   Copyright Notice                                             *
- *   Copyright (c) PixelsDE | Daniel 2018                         *
- *   Created: 05.05.2018 / 11:59                                  *
- *   All contents of this source text are protected by copyright. *
- *   The copyright law, unless expressly indicated otherwise, is  *
- *   at PixelsDE | Daniel. All rights reserved                    *
- *   Any type of duplication, distribution, rental, sale, award,  *
- *   Public accessibility or other use                            *
- *   Requires the express written consent of PixelsDE | Daniel.   *
- *****************************************************************/
-
 
 import de.bypixels.teamcreate.game.util.*;
 import org.bukkit.Bukkit;
@@ -21,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class CMDstartGame implements CommandExecutor {
     private int TaskID;
@@ -28,10 +17,9 @@ public class CMDstartGame implements CommandExecutor {
     //Startet das Spiel
     @Deprecated
     @Override
-    public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(final @NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         if (command.getName().equalsIgnoreCase("start")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+            if (sender instanceof Player player) {
                 if (player.hasPermission("start")) {
                     for (Player all : Bukkit.getOnlinePlayers()) {
                         if (!BanishedPlayers.getBanishedPlayers().contains(all.getName()) && all.getGameMode() != GameMode.ADVENTURE) {
@@ -49,35 +37,19 @@ public class CMDstartGame implements CommandExecutor {
                         public void run() {
                             switch (timer) {
                                 case 60:
-                                    startMesage(timer);
-                                    break;
-                                case 45:
-                                    startMesage(timer);
-                                    break;
-                                case 30:
-                                    startMesage(timer);
-                                    break;
-                                case 20:
-                                    startMesage(timer);
-                                    break;
-                                case 15:
-                                    startMesage(timer);
-                                    break;
-                                case 10:
-                                    startMesage(timer);
-                                    break;
+                                case 1:
+                                case 2:
                                 case 5:
+                                case 10:
+                                case 15:
+                                case 20:
+                                case 30:
+                                case 45:
                                     startMesage(timer);
                                     break;
                                 case 4:
                                     startMesage(timer);
                                 case 3:
-                                    startMesage(timer);
-                                    break;
-                                case 2:
-                                    startMesage(timer);
-                                    break;
-                                case 1:
                                     startMesage(timer);
                                     break;
                                 case 0:
@@ -120,8 +92,6 @@ public class CMDstartGame implements CommandExecutor {
                 all.sendMessage(de.bypixels.teamcreate.game.main.MinecartRain.getPREFIX() + "§7Das Spiel startet in: §6" + timer + " §7Sekunde!");
                 all.playSound(all.getLocation(), Sound.BLOCK_LAVA_POP, 2, 2);
             }
-        } else {
-
         }
 
     }

@@ -1,15 +1,4 @@
 package de.bypixels.teamcreate.game.events;
-/******************************************************************
- *   Copyright Notice                                             *
- *   Copyright (c) PixelsDE | Daniel 2018                         *
- *   Created: 05.05.2018 / 11:59                                  *
- *   All contents of this source text are protected by copyright. *
- *   The copyright law, unless expressly indicated otherwise, is  *
- *   at PixelsDE | Daniel. All rights reserved                    *
- *   Any type of duplication, distribution, rental, sale, award,  *
- *   Public accessibility or other use                            *
- *   Requires the express written consent of PixelsDE | Daniel.   *
- *****************************************************************/
 
 
 import de.bypixels.teamcreate.game.main.MinecartRain;
@@ -25,8 +14,7 @@ public class MinecartDespawnOnGround implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onVehicleDroponGround(VehicleMoveEvent event) {
-        if (event.getVehicle() instanceof Minecart) {
-            Minecart minecart = (Minecart) event.getVehicle();
+        if (event.getVehicle() instanceof Minecart minecart) {
             if (MinecartRain.getSpawnedMinecarts().contains(minecart)) {
                 if (event.getTo().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR || minecart.getLocation().getY() <= DataAboutGame.getHighWhereMinecartsDespawn()) {
                     minecart.remove();

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 /******************************************************************
  *   Copyright Notice                                             *
@@ -28,7 +29,7 @@ public class DataAboutGame {
     }
 
 
-    public static File file = new File("plugins/Minecart-Rain/config.yml");
+    public static final File file = new File("plugins/Minecart-Rain/config.yml");
     public static FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
 
@@ -100,7 +101,7 @@ public class DataAboutGame {
     }
 
     public static String getPREFIX() {
-        return ChatColor.translateAlternateColorCodes('&', cfg.getString("Prefix"));
+        return ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(cfg.getString("Prefix")));
     }
 
     public static void setPREFIX(String PREFIX) {
@@ -109,7 +110,7 @@ public class DataAboutGame {
     }
 
     public static int getAmountOfPlayerToStop() {
-        return (int) cfg.getInt("amountOfPlayerToStop");
+        return cfg.getInt("amountOfPlayerToStop");
     }
 
     public static void setAmountOfPlayerToStop(int amountOfPlayerToStop) {
