@@ -26,7 +26,7 @@ import java.util.TreeMap;
 
 public class SortedHashMap {
 
-    public SortedHashMap(HashMap map) {
+    public TreeMap<Object, Object> SortedHashMap(HashMap map) {
         return new TreeMap<Object, Object>(map);
     }
 

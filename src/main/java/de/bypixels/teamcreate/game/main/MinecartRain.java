@@ -5,7 +5,6 @@ import de.bypixels.teamcreate.game.events.*;
 import de.bypixels.teamcreate.game.util.BanishedPlayers;
 import de.bypixels.teamcreate.game.util.DataAboutArena;
 import de.bypixels.teamcreate.game.util.DataAboutGame;
-import de.bypixels.teamcreate.game.util.SortedHashMap;
 import de.bypixels.teamcreate.game.util.api.WinDetection;
 import de.bypixels.teamcreate.game.util.api.specialEvents.PlayerWinEvent;
 import de.bypixels.teamcreate.game.util.sql.MySQL;
@@ -182,7 +181,6 @@ public final class MinecartRain extends JavaPlugin implements Listener {
 
         }
 
-        SortedHashMap sortedHashMap = new SortedHashMap();
 
 
 
